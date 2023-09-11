@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios"
+import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,10 +39,10 @@ const formSchema = z.object({
 });
 
 const CreateServerModel = () => {
-  const {isOpen,onClose,type}=useModal();
-  const isModalOpen=isOpen && type==="createServer";
-    const router=useRouter();
-    
+  const { isOpen, onClose, type } = useModal();
+  const isModalOpen = isOpen && type === "createServer";
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,20 +54,20 @@ const CreateServerModel = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try{
-      await axios.post("/api/servers/",values);
+    try {
+      await axios.post("/api/servers/", values);
 
       form.reset();
       router.refresh();
       onClose();
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
-  const handleClose=()=>{
+  const handleClose = () => {
     form.reset();
     onClose();
-  }
+  };
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
@@ -83,17 +83,21 @@ const CreateServerModel = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                <FormField control={form.control}
-                name="imageUrl"
-                render={({field})=>(
-                  <FormItem>
-                    <FormControl>
-                      <FileUpload endpoint="serverImage"
-                      value={field.value}
-                      onChange={field.onChange}/>
-                    </FormControl>
-                  </FormItem>
-                )} />
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
               <FormField
                 control={form.control}
@@ -111,13 +115,15 @@ const CreateServerModel = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-                <Button disabled={isLoading} variant={"primary"}>Create</Button>
+              <Button disabled={isLoading} variant={"primary"}>
+                Create
+              </Button>
             </DialogFooter>
           </form>
         </Form>
